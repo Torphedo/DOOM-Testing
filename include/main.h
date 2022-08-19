@@ -16,6 +16,8 @@
 #define GLSH       (SH*pixelScale)          // OpenGL window height
 
 #define M_PI       3.1415926                // pi
+#define numSect    4
+#define numWalls   numSect * 4
 
 //------------------------------------------------------------------------------
 typedef struct
@@ -42,13 +44,31 @@ typedef struct
 	int a;           // Left/Right rotation
 	int l;           // Vertical rotation
 }player; player P;
+
+typedef struct
+{
+	int x1, y1;      // Bottom line point 1
+	int x2, y2;      // Bottom line point 2
+	int c;			 // Wall color
+}walls; walls Wall[30];
+
+typedef struct
+{
+	int wallStart, wallEnd;
+	int z1, z2;		  // Bottom & Top height
+	int depth;		  // Distance
+	int c1, c2;       // Floor & Roof colors
+	int surf[SW];	  // Array of all possible pixels in screen width
+	int surface;	  // Index: which surfaces need to be drawn?
+}sectors; sectors Sector[30];
+
 //------------------------------------------------------------------------------
 
 void pixel(int x, int y, int c);
 void movePlayer();
 void clearBackground();
 void clipBehindPlayer(int* x1, int* y1, int* z1, int x2, int y2, int z2);
-void DrawWall(int x1, int x2, int b1, int b2, int t1, int t2);
+void DrawWall(int x1, int x2, int b1, int b2, int t1, int t2, int color, int surface);
 void draw3D();
 void display();
 void KeysDown(unsigned char key, int x, int y);
